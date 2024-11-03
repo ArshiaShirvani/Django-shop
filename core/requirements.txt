@@ -1,7 +1,11 @@
 asgiref==3.8.1
 Django==4.2.16
+Faker==30.8.2
+pillow==11.0.0
 psycopg==3.2.3
 psycopg-binary==3.2.3
+python-dateutil==2.9.0.post0
 python-decouple==3.8
+six==1.16.0
 sqlparse==0.5.1
 typing_extensions==4.12.2
