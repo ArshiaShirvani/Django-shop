@@ -1,4 +1,5 @@
 from django.db import models
+from decimal import Decimal
 
 class ProductStatusType(models.IntegerChoices):
     active = 1,("فعال")
@@ -32,6 +33,11 @@ class ProductModel(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def get_show_price(self):        
+        discount_amount = self.price * Decimal(self.discount_percent / 100)
+        discounted_amount = self.price - discount_amount
+        return '{:,}'.format(round(discounted_amount))
 
 class ProductImageModel(models.Model):
     Product = models.ForeignKey(ProductModel,on_delete=models.CASCADE)
