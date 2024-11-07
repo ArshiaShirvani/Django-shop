@@ -6,12 +6,32 @@ from django.views.generic import (TemplateView,
 from .models import (ProductModel,
                      ProductCategoryModel,
                      ProductStatusType)
-
+from django.core.exceptions import FieldError
 
 class ProductListView(ListView):
     template_name = 'shop/product-grid.html'
-    queryset = ProductModel.objects.filter(status=ProductStatusType.active.value)
     paginate_by = 12
+
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('page_size', self.paginate_by)
+
+    def get_queryset(self):
+        queryset = ProductModel.objects.filter(
+            status=ProductStatusType.active.value)
+        if search_q := self.request.GET.get("q"):
+            queryset = queryset.filter(title__icontains=search_q)
+        if category_id := self.request.GET.get("category_id"):
+            queryset = queryset.filter(category__id=category_id)
+        if min_price := self.request.GET.get("min_price"):
+            queryset = queryset.filter(price__gte=min_price)
+        if max_price := self.request.GET.get("max_price"):
+            queryset = queryset.filter(price__lte=max_price)
+        if order_by := self.request.GET.get("order_by"):
+            try:
+                queryset = queryset.order_by(order_by)
+            except FieldError:
+                pass
+        return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
