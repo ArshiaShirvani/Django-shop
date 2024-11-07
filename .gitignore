@@ -164,3 +164,6 @@ postgres/data/*
 
 #ignore upload file
 core/media/shop/upload-image
+
+#ignore migrations of models 
+core/shop/migrations
