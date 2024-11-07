@@ -6,7 +6,7 @@ from shop.models import ProductModel, ProductCategoryModel,ProductStatusType
 from accounts.models import User,UserType
 from pathlib import Path
 from django.core.files import File
- 
+
 BASE_DIR = Path(__file__).resolve().parent
 
 
@@ -38,8 +38,9 @@ class Command(BaseCommand):
             selected_image = random.choice(image_list)
             image_obj = File(file=open(BASE_DIR / selected_image,"rb"),name=Path(selected_image).name)
             description = fake.paragraph(nb_sentences=10)
+            brief_description = fake.paragraph(nb_sentences=5)
             stock = fake.random_int(min=0, max=10)
-            status = random.choice(ProductStatusType.choices)[0]  # Replace with your actual status choices
+            status = random.choice(ProductStatusType.choices)[0]
             price = fake.random_int(min=10000, max=100000)
             discount_percent = fake.random_int(min=0, max=50)
 
@@ -49,6 +50,7 @@ class Command(BaseCommand):
                 slug=slug,
                 image=image_obj,
                 description=description,
+                brief_description = brief_description,
                 stock=stock,
                 status=status,
                 price=price,
