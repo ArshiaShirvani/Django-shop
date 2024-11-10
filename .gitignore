@@ -167,3 +167,4 @@ core/media/shop/upload-image
 
 #ignore migrations of models 
 core/shop/migrations
+core/website/migrations
