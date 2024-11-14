@@ -1,8 +1,9 @@
-from django.urls import path,include
+from django.urls import path,re_path
 from . import views
 
-app_name = 'cart'
+app_name = "cart"
 
 urlpatterns = [
-    
+    path('session/add-product/',views.SessionAddProductView.as_view(),name='session-add-product'),
+    path('session/cart/summary/',views.SessionCartSummary.as_view(),name='session-cart-summary'),
 ]
