@@ -228,7 +228,7 @@
                             <!-- End Rating -->
 
                             <button type="button"
-                                class="btn btn-outline-primary btn-sm btn-transition rounded-pill">افزودن به سبد
+                                class="btn btn-outline-primary btn-sm btn-transition rounded-pill" onclick="addCartItem('{{object.id}}')">افزودن به سبد
                                 خرید</button>
                         </div>
                     </div>
@@ -398,11 +398,31 @@
 
 </script>
 <script>
-    function changePage(page_number){
+    function changePage(page_number) {
         let current_url_params = new URLSearchParams(window.location.search)
         current_url_params.set("page", page_number)
         let new_url = window.location.pathname + "?" + current_url_params.toString()
         window.location.href = new_url
+    }
+</script>
+<script>
+    function addCartItem(product_id){
+        console.log(product_id)
+        $.ajax({
+            url: "{% url 'cart:session-add-product' %}",
+            type: "POST",
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: '{{csrf_token}}'
+            },
+            success: function (response) {
+                $("#total-cart-items-count").html(response.total_quantity)
+                console.log("Data sent successfully:", response);
+            },
+            error: function (jqXHR, status, error) {
+                console.log("Error occurred:", error);
+            }
+        });
     }
 </script>
 
