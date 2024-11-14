@@ -82,10 +82,10 @@
                         <li class="nav-item">
                             <a class="nav-link " href="{% url 'website:contact' %}">ارتباط با ما</a>
                         </li>
-                        
+
 
                         <!-- Pages -->
-                        
+
                         <!-- End Pages -->
 
                         <li class="nav-item">
@@ -97,12 +97,16 @@
                             <!-- End Search -->
 
                             <!-- Shopping Cart -->
-                            <button type="button" class="btn btn-ghost-secondary btn-icon" type="button"
+                            <!-- <button type="button" class="btn btn-ghost-secondary btn-icon" type="button"
                                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarShoppingCart"
                                 aria-controls="offcanvasNavbarShoppingCart">
                                 <i class="bi-basket"></i>
                                 <span class="cart-item-count ">3</span>
-                            </button>
+                            </button> -->
+                            <a href="{% url 'cart:session-cart-summary' %}" class="btn btn-ghost-secondary btn-icon">
+                                <i class="bi-basket"></i>
+                                <span class="cart-item-count " id="total-cart-items-count">{{cart.get_total_quantity}}</span>
+                            </a>
                             <!-- End Shopping Cart -->
                             {% if request.user.is_authenticated %}
                             <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
@@ -326,8 +330,8 @@
                             <!-- Input Card -->
                             <div class="input-card">
                                 <div class="input-card-form">
-                                    <input type="text" class="form-control form-control-lg" placeholder="جستجو محصولات" name="q"
-                                        aria-label="جستجو محصولات">
+                                    <input type="text" class="form-control form-control-lg" placeholder="جستجو محصولات"
+                                        name="q" aria-label="جستجو محصولات">
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-lg">جستجو کردن</button>
                             </div>
