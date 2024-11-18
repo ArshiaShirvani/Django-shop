@@ -83,6 +83,9 @@
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.view_name  == 'website:contact' %} active {% endif %}" href="{% url 'website:contact' %}">ارتباط با ما</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.view_name  == 'website:repair' %} active {% endif %}" href="#">درخواست تعمیر</a>
+                        </li>
 
 
                         <!-- Pages -->
