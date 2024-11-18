@@ -1,51 +1,47 @@
 {% if messages %}
     {% for message in messages %}
-    
-    <script>
+      <script>
         Toastify({
-            text: `{{ message|safe }}`,
+            text:`{{ message|safe }}`,
             className: `{{ message.tags }}`,
             style: {
-            background: "green",
+              background: "blue",
             }
-        }).showToast();
-    </script>
-    
+          }).showToast();
+      </script>
     {% endfor %}
-{% endif %}
+  {% endif %}
 
-{% if form.errors %}
-<div class="alert alert-error">
-  
-  <ul>
-    {% for field in form %}
-      {% if field.errors %}
-        {% for error in field.errors %}
-
-          <script>
+  {% if form.errors %}
+    <div class="alert alert-error">
+      <ul>
+        {% for field in form %}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              
+              <script>
+                Toastify({
+                    text:`{{ error|escape }}`,
+                    className: `error`,
+                    style: {
+                      background: "red",
+                    }
+                  }).showToast();
+              </script>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% if form.non_field_errors %}
+        <script>
             Toastify({
-                text: `{{ field.name }} - {{ error|escape }}`,
+                text:`ایمیل یا رمز عبور شما اشتباه است`,
                 className: `error`,
                 style: {
-                background: "red",
+                  background: "red",
                 }
-            }).showToast();
+              }).showToast();
           </script>
-        {% endfor %}
       {% endif %}
-    {% endfor %}
-  </ul>
-  {% if form.non_field_errors %}
-    
-    <script>
-        Toastify({
-            text: `ایمیل یا کلمه عبور اشتباه است`,
-            className: `error`,
-            style: {
-            background: "red",
-            }
-        }).showToast();
-      </script>
+    </div>
   {% endif %}
-</div>
-{% endif %}
