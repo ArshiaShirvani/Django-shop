@@ -11,6 +11,6 @@ class LoginView(auth_views.LoginView):
         messages.success(
             self.request, 'خوش امدید ❤️')
         return super().form_valid(form)
-
+    
 class LogoutView(auth_views.LogoutView):
     pass
