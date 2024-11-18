@@ -38,15 +38,20 @@ class ProductModel(models.Model):
     def __str__(self):
         return self.title
     
+    def get_price(self):        
+        discount_amount = self.price * Decimal(self.discount_percent / 100)
+        discounted_amount = self.price - discount_amount
+        return round(discounted_amount)
+
     def get_show_price(self):        
         discount_amount = self.price * Decimal(self.discount_percent / 100)
         discounted_amount = self.price - discount_amount
         return '{:,}'.format(round(discounted_amount))
     
     def get_show_raw_price(self):
-        return '{:,}'.format(round(self.price))
+        return round(self.price)
     
-    def is_discount(self):
+    def is_discounted(self):
         return self.discount_percent != 0
 
 class ProductImageModel(models.Model):
