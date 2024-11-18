@@ -169,3 +169,4 @@ core/media/shop/upload-image
 core/shop/migrations
 core/website/migrations
 core/cart/migrations
+core/dashboard/migrations
