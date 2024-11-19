@@ -22,8 +22,8 @@
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="{% static 'css/theme.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/toastify/toastify.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %} {% endblock extra_css %}
 
     {% block extra_css_no_compress %} {% endblock extra_css_no_compress %}
@@ -103,7 +103,7 @@
                             <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="avatar avatar-sm avatar-circle">
-                                    <img class="avatar-img" src="{% static 'img/160x160/img9.jpg' %}"
+                                    <img class="avatar-img" src="{{request.user.user_profile.image.url}}"
                                         alt="Image Description">
                                 </span>
                             </button>
@@ -409,7 +409,7 @@
     <script src="{% static 'js/theme.min.js' %}"></script>
 
     <!-- JS Toastify -->
-    <script src="{% static 'vendor/toastify/toastify.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <!-- JS Plugins Init. -->
     <script>

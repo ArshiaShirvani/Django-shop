@@ -8,11 +8,11 @@
           <!-- Avatar -->
           <div class="d-none d-lg-block text-center mb-5">
             <div class="avatar avatar-xxl avatar-circle mb-3">
-              <img class="avatar-img" src="{% static 'img/160x160/img9.jpg' %}" alt="Image Description" />
+              <img class="avatar-img" src="{{request.user.user_profile.image.url}}" alt="Image Description" />
 
             </div>
 
-            <h4 class="card-title mb-0">{{request.user.user_profile.get_fullname}}</h4>
+            <h4 class="card-title mb-2">{{request.user.user_profile.get_fullname}}</h4>
             <p class="card-text small">{{request.user.email}}</p>
           </div>
           <!-- End Avatar -->
@@ -28,13 +28,13 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'dashboard:customer:customer-security-edit' %}">
                 <i class="bi-shield-shaded nav-icon"></i> امنیت
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'dashboard:customer:customer-profile-edit' %}">
                 <i class="bi-sliders nav-icon"></i> تنظیمات پروفایل
               </a>
             </li>
