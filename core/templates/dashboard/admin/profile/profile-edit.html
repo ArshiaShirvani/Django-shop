@@ -27,12 +27,12 @@
             <div class="col-sm-9">
                 <!-- Media -->
 
-                <form action="" method="post"
+                <form action="{% url 'dashboard:admin:admin-edit-avatar' %}" method="post"
                     class="d-flex align-items-center" enctype="multipart/form-data">
                     {% csrf_token %}
                     <!-- Avatar -->
                     <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
-                        <img id="avatarImg"class="avatar-img" src=""
+                        <img id="avatarImg"class="avatar-img" src="{{request.user.user_profile.image.url}}"
                             alt="Image Description">
                     </label>
 

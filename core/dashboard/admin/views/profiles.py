@@ -7,9 +7,8 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from accounts.models import Profile
+from django.shortcuts import redirect
 
-class AdminDashboardHomeView(LoginRequiredMixin,HasAdminAccessPermission,TemplateView):
-    template_name = "dashboard/admin/home.html"
     
 class AdminSecurityEditView(LoginRequiredMixin,HasAdminAccessPermission,SuccessMessageMixin,auth_view.PasswordChangeView):
     
@@ -28,4 +27,22 @@ class AdminProfileEditView(LoginRequiredMixin,HasAdminAccessPermission,SuccessMe
     
     def get_object(self, queryset=None):
         return Profile.objects.get(user=self.request.user)
+    
+class AdminEditAvatarView(LoginRequiredMixin,HasAdminAccessPermission,SuccessMessageMixin,UpdateView):
+    
+    http_method_names = ["post"]
+    model = Profile
+    fields = [
+        "image"
+    ]
+    success_message = "به روزرسانی آواتار با موفقیت انجام شد"
+    success_url = reverse_lazy("dashboard:admin:admin-profile-edit")
+    
+    def get_object(self, queryset=None):
+        return Profile.objects.get(user=self.request.user)
+    
+    def form_invalid(self, form):
+        messages.error(self.request,"به روزرسانی آواتار با مشکل مواجه شد")
+        return redirect(self.success_url)
+    
     

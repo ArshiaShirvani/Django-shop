@@ -102,7 +102,7 @@
                 <div class="list-group-item">
                     <div class="d-flex">
                         <div class="flex-shrink-0">
-                            <img class="avatar avatar-xs avatar-4x3" src="{% static '/svg/brands/google-icon.svg' %}"
+                            <img class="avatar avatar-xs avatar-4x3" src="{{request.user.user_profile.image.url}}"
                                 alt="Image Description">
                         </div>
 

@@ -29,4 +29,3 @@ class AdminProfileEditForm(forms.ModelForm):
         self.fields['last_name'].widget.attrs['placeholder'] = 'نام خانوادگی را وارد نمایید'
         self.fields['phone_number'].widget.attrs['class'] = 'form-control text-center'
         self.fields['phone_number'].widget.attrs['placeholder'] = 'شماره همراه را وارد نمایید'
-    
