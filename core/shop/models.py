@@ -53,6 +53,12 @@ class ProductModel(models.Model):
     
     def is_discounted(self):
         return self.discount_percent != 0
+    
+    def is_active(self):
+        return self.status == ProductStatusType.active.value
+    
+    def get_price(self):
+        return '{:,}'.format(self.price)
 
 class ProductImageModel(models.Model):
     Product = models.ForeignKey(ProductModel,on_delete=models.CASCADE)
