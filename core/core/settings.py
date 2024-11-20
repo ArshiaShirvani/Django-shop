@@ -27,6 +27,7 @@ SECRET_KEY = config('SECRET_KEY',default='django-insecure-i5$2n+iq%%+$4+w*bpw&os
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool,default=True)
 
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS',cast= lambda v: [item.strip() for item in v.split(',')],default="*")
 
 
@@ -95,6 +96,7 @@ DATABASES = {
     }}
 
 
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -120,6 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = config('TIME_ZONE', default='Asia/Tehran')
+
 
 USE_I18N = True
 
@@ -151,6 +154,8 @@ EMAIL_USE_SSL = config('EMAIL_USE_SSL',cast=bool,default=False)
 EMAIL_PORT = config('EMAIL_PORT',cast=int,default=25)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER',default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD',default='')
+
+
 
 #account settings
 AUTH_USER_MODEL = 'accounts.User'

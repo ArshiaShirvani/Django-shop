@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView,UpdateView,DeleteView,CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_view
@@ -10,6 +10,7 @@ from accounts.models import Profile
 from django.shortcuts import redirect
 from django.core.exceptions import FieldError
 from shop.models import ProductModel,ProductCategoryModel
+from ..forms import ProductForm
 
 class AdminProductsListView(LoginRequiredMixin, HasAdminAccessPermission, ListView):
 
@@ -42,3 +43,34 @@ class AdminProductsListView(LoginRequiredMixin, HasAdminAccessPermission, ListVi
         context["total_items"] = self.get_queryset().count()
         context["categories"] = ProductCategoryModel.objects.all()
         return context
+    
+class AdminProductEditView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,UpdateView):
+    template_name = "dashboard/admin/products/product-edit.html"
+    queryset = ProductModel.objects.all()
+    form_class = ProductForm
+    success_message = "ویرایش محصول با موفقیت انجام شد"
+    
+    def get_success_url(self):
+        return reverse_lazy("dashboard:admin:admin-product-edit",kwargs={"pk":self.get_object().pk})
+    
+class AdminProductDeleteView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,DeleteView):
+    template_name = "dashboard/admin/products/product-delete.html"
+    queryset = ProductModel.objects.all()
+    success_url = reverse_lazy("dashboard:admin:admin-products-list")
+    success_message = "محصول با موفقیت حذف شد"
+    
+class AdminProductCreateView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,CreateView):
+    template_name = "dashboard/admin/products/product-create.html"
+    queryset = ProductModel.objects.all()
+    form_class = ProductForm
+    success_message = "محصول با موفقیت ایجاد شد"
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        super().form_valid(form)
+        return redirect(reverse_lazy("dashboard:admin:admin-product-edit", kwargs={"pk": form.instance.pk}))
+
+    def get_success_url(self):
+        return reverse_lazy("dashboard:admin:admin-products-list")
+    
+   
