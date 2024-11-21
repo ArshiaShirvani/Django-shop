@@ -98,7 +98,7 @@
                             <td>{{object.title}}</td>
                             <td>{% for category in object.category.all %} {{category.title}}
                                 {% if not forloop.last %},{% endif %} {% endfor %}</td>
-                            <td>{{object.price}}</td>
+                            <td>{{object.get_price_admin_panel}}</td>
                             <td>{{object.stock}}</td>
                             <td> {% if object.is_active %}<span class="badge bg-success">نشر شده</span>
                                 {% else %}
