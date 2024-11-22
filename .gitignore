@@ -166,7 +166,7 @@ postgres/data/*
 core/media/shop/upload-image
 core/media/dashboard/
 
-#ignore migrations of models 
+#ignore migrations of the models 
 core/shop/migrations
 core/website/migrations
 core/cart/migrations
