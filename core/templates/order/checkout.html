@@ -8,52 +8,26 @@
             <h4 class="mb-3">انتخاب آدرس </h4>
 
             <!-- Form -->
-            <form class="needs-validation" novalidate>
+            <form action="." method="post" id="checkout-form">
 
 
                 <hr class="my-4">
 
                 <div class="d-grid gap-2">
-
+                    {% for address in addresses %}
                     <!-- Check -->
                     <div class="form-check">
-                        <input type="radio" class="form-check-input" name="address" id="address-1" checked required>
-                        <label class="form-check-label" for="address"> کرج، xxxx ، بلوار xxx ، خیابان xxx ، بلوک
-                            xxx</label>
+                        <input type="radio" class="form-check-input" name="address" checked required value="{{address.id}}">
+                        <label class="form-check-label" for="address"> {{address.state}},{{address.city}},{{address.address}} ,{{address.zip_code}}</label>
                     </div>
-                    <div class="form-check">
-                        <input type="radio" class="form-check-input" name="address" id="address-2" required>
-                        <label class="form-check-label" for="address-2"> کرج، xxxx ، بلوار xxx ، خیابان xxx ، بلوک
-                            xxx</label>
-                    </div>
+                    {% endfor %}
                     <!-- End Check -->
                     <div>
-                        <a class="" href="./account-address.html">مدیریت آدرس ها</a>
+                        <a class="" href="{% url 'dashboard:customer:customer-address-list' %}">مدیریت آدرس ها</a>
                     </div>
                 </div>
 
                 <hr class="my-4">
-
-                <h4 class="mb-3">روش پرداخت</h4>
-
-                <div class="my-3">
-                    <!-- Check -->
-                    <div class="form-check">
-                        <input id="creditShopCheckout" name="paymentMethod" type="radio" class="form-check-input"
-                            checked required>
-                        <label class="form-check-label" for="creditShopCheckout">پرداخت آنلاین</label>
-                    </div>
-                    <!-- End Check -->
-
-                    <!-- Check -->
-                    <div class="form-check">
-                        <input id="debitShopCheckout" name="paymentMethod" type="radio" class="form-check-input"
-                            required>
-                        <label class="form-check-label" for="debitShopCheckout">کارت به کارت</label>
-                    </div>
-                    <!-- End Check -->
-                </div>
-
 
                 <hr class="my-4">
 
@@ -83,12 +57,12 @@
                             <h3 class="card-header-title">خلاصه سفارش</h3>
                         </div>
 
-                        <form>
+                        
 
                             <div class="input-group border-bottom pb-4 mb-3 ">
                                 <input type="text" class="form-control text-center" name="name" placeholder="کد تخفیف"
                                     aria-label="کد تخفیف">
-                                <button class="btn btn-primary"> بررسی</button>
+                                <button class="btn btn-primary" form="checkout-form"> بررسی</button>
                             </div>
 
                             <div class="border-bottom pb-4 mb-4">
@@ -121,9 +95,9 @@
                             </div>
 
                             <div class="d-grid">
-                                <a class="btn btn-primary btn-lg" href="/order-completed.html">ثبت نهایی</a>
+                                <button class="btn btn-primary btn-lg" form="checkout-form">ثبت نهایی</button>
                             </div>
-                        </form>
+                        
                     </div>
                     <!-- End Card -->
                 </div>
