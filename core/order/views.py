@@ -11,6 +11,7 @@ from cart.cart import CartSession
 from .forms import CheckOutForm 
 from django.urls import reverse_lazy
 from order.models import OrderModel,OrderItemsModel
+from django.contrib import messages
 
 class OrderCheckOutView(LoginRequiredMixin,HasCustomerAccessPermission,FormView):
     template_name = "order/checkout.html"
@@ -51,7 +52,9 @@ class OrderCheckOutView(LoginRequiredMixin,HasCustomerAccessPermission,FormView)
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        print(self.request.POST)
+        messages.error(
+            self.request,"آدرس خود را وارد کنید"
+        )
         return super().form_invalid(form)
     
     def get_context_data(self, **kwargs):
