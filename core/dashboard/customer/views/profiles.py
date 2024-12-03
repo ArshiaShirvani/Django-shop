@@ -11,6 +11,8 @@ from django.shortcuts import redirect
 
     
 class CustomerSecurityEditView(LoginRequiredMixin,HasCustomerAccessPermission,SuccessMessageMixin,auth_view.PasswordChangeView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/customer/profile/security-edit.html"
     form_class = CustomerPasswordChangeForm
     success_url = reverse_lazy("dashboard:customer:customer-security-edit")
@@ -20,6 +22,8 @@ class CustomerSecurityEditView(LoginRequiredMixin,HasCustomerAccessPermission,Su
         return Profile.objects.get(user = self.request.user)
     
 class CustomerProfileEditView(LoginRequiredMixin,HasCustomerAccessPermission,SuccessMessageMixin,UpdateView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/customer/profile/profile-edit.html"
     form_class = CustomerProfileEditForm
     success_url = reverse_lazy("dashboard:customer:customer-profile-edit")
@@ -34,6 +38,8 @@ class CustomerProfileEditView(LoginRequiredMixin,HasCustomerAccessPermission,Suc
     
 
 class CustomerAvatarEditView(LoginRequiredMixin,HasCustomerAccessPermission,SuccessMessageMixin,UpdateView):
+    
+    login_url = reverse_lazy('accounts:login')
     http_method_names = ["post"]
     model = Profile
     success_url = reverse_lazy("dashboard:customer:customer-profile-edit")

@@ -52,6 +52,7 @@ class AdminNewsLettersListView(LoginRequiredMixin, HasAdminAccessPermission, Lis
 class NewsletterDeleteView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, DeleteView):
     title = "حذف خبرنامه"
     template_name = "dashboard/admin/newsletters/newsletter-delete.html"
+    login_url = reverse_lazy('accounts:login')
     success_url = reverse_lazy("dashboard:admin:newsletter-list")
     success_message = "عضو مورد نظر با موفقیت حذف شد"
 

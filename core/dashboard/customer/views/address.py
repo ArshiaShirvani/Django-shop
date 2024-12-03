@@ -13,6 +13,7 @@ from ..forms import UserAddressForm
 
 class CustomerAddressListView(LoginRequiredMixin, HasCustomerAccessPermission, ListView):
 
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/customer/addresses/address-list.html"
 
     def get_queryset(self):
@@ -28,6 +29,8 @@ class CustomerAddressListView(LoginRequiredMixin, HasCustomerAccessPermission, L
         return context
     
 class CustomerAddressEditView(LoginRequiredMixin, HasCustomerAccessPermission,SuccessMessageMixin,UpdateView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/customer/addresses/address-edit.html"
 
     form_class = UserAddressForm
@@ -40,6 +43,8 @@ class CustomerAddressEditView(LoginRequiredMixin, HasCustomerAccessPermission,Su
         return reverse_lazy("dashboard:customer:customer-address-edit",kwargs={"pk":self.get_object().pk})
     
 class CustomerAddressDeleteView(LoginRequiredMixin, HasCustomerAccessPermission,SuccessMessageMixin,DeleteView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/customer/addresses/address-delete.html"
 
     success_url = reverse_lazy("dashboard:customer:customer-address-list")
@@ -49,6 +54,8 @@ class CustomerAddressDeleteView(LoginRequiredMixin, HasCustomerAccessPermission,
         return UserAddressModel.objects.filter(user=self.request.user)
     
 class CustomerAddressCreateView(LoginRequiredMixin, HasCustomerAccessPermission,SuccessMessageMixin,CreateView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/customer/addresses/address-create.html"
 
     form_class = UserAddressForm

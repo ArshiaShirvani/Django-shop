@@ -13,7 +13,8 @@ from shop.models import ProductModel,ProductCategoryModel
 from ..forms import ProductForm
 
 class AdminProductsListView(LoginRequiredMixin, HasAdminAccessPermission, ListView):
-
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/admin/products/products-list.html"
     paginate_by = 10
 
@@ -45,6 +46,8 @@ class AdminProductsListView(LoginRequiredMixin, HasAdminAccessPermission, ListVi
         return context
     
 class AdminProductEditView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,UpdateView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/admin/products/product-edit.html"
     queryset = ProductModel.objects.all()
     form_class = ProductForm
@@ -54,12 +57,16 @@ class AdminProductEditView(LoginRequiredMixin, HasAdminAccessPermission,SuccessM
         return reverse_lazy("dashboard:admin:admin-product-edit",kwargs={"pk":self.get_object().pk})
     
 class AdminProductDeleteView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,DeleteView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/admin/products/product-delete.html"
     queryset = ProductModel.objects.all()
     success_url = reverse_lazy("dashboard:admin:admin-products-list")
     success_message = "محصول با موفقیت حذف شد"
     
 class AdminProductCreateView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,CreateView):
+    
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/admin/products/product-create.html"
     queryset = ProductModel.objects.all()
     form_class = ProductForm

@@ -12,6 +12,7 @@ from django.shortcuts import redirect
     
 class AdminSecurityEditView(LoginRequiredMixin,HasAdminAccessPermission,SuccessMessageMixin,auth_view.PasswordChangeView):
     
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/admin/profile/security-edit.html"
     form_class = AdminPasswordChangeForm
     success_message = "رمز عبور شما با موفقیت تغییر کرد"
@@ -20,6 +21,7 @@ class AdminSecurityEditView(LoginRequiredMixin,HasAdminAccessPermission,SuccessM
 
 class AdminProfileEditView(LoginRequiredMixin,HasAdminAccessPermission,SuccessMessageMixin,UpdateView):
     
+    login_url = reverse_lazy('accounts:login')
     template_name = "dashboard/admin/profile/profile-edit.html"
     form_class = AdminProfileEditForm
     success_message = "پروفایل به روزرسانی شد"
@@ -30,6 +32,7 @@ class AdminProfileEditView(LoginRequiredMixin,HasAdminAccessPermission,SuccessMe
     
 class AdminEditAvatarView(LoginRequiredMixin,HasAdminAccessPermission,SuccessMessageMixin,UpdateView):
     
+    login_url = reverse_lazy('accounts:login')
     http_method_names = ["post"]
     model = Profile
     fields = [

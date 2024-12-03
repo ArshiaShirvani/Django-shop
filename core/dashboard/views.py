@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 
 class DashboardHomeView(LoginRequiredMixin,View):
     
+    login_url = reverse_lazy('accounts:login')
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if request.user.type == UserType.admin.value:

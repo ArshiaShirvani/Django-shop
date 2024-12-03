@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.permissions import *
 from django.db.models import F,Q
 from django.core import exceptions
-
+from django.urls import reverse_lazy
 
 class ContactListView(LoginRequiredMixin,HasAdminAccessPermission, ListView):
     title = "لیست تماس ها"
@@ -54,6 +54,7 @@ class ContactListView(LoginRequiredMixin,HasAdminAccessPermission, ListView):
 class ContactDetailView(LoginRequiredMixin,HasAdminAccessPermission, DetailView):
     title = "جزئیات تماس"
     template_name = "dashboard/admin/contacts/contact-detail.html"
+    login_url = reverse_lazy('accounts:login')
     
     def get_object(self, queryset=None ):
         contact_obj = get_object_or_404(ContactUsModel,pk=self.kwargs.get("pk"))

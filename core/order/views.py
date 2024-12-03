@@ -16,6 +16,7 @@ class OrderCheckOutView(LoginRequiredMixin,HasCustomerAccessPermission,FormView)
     template_name = "order/checkout.html"
     form_class = CheckOutForm
     success_url = reverse_lazy('order:order-completed')
+    login_url = reverse_lazy('accounts:login')
     
     def get_form_kwargs(self):
         kwargs = super(OrderCheckOutView, self).get_form_kwargs()
@@ -64,4 +65,5 @@ class OrderCheckOutView(LoginRequiredMixin,HasCustomerAccessPermission,FormView)
 
 
 class OrderCompletedView(LoginRequiredMixin,HasCustomerAccessPermission,TemplateView):
+    login_url = reverse_lazy('accounts:login')
     template_name = "order/order-completed.html"

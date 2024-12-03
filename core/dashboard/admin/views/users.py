@@ -24,6 +24,8 @@ User = get_user_model()
 
 
 class UserListView(LoginRequiredMixin,HasAdminAccessPermission, ListView):
+    
+    login_url = reverse_lazy('accounts:login')
     title = "لیست کاربران"
     template_name = "dashboard/admin/users/user-list.html"
     paginate_by = 10
