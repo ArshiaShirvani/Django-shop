@@ -173,3 +173,4 @@ core/cart/migrations
 core/dashboard/migrations
 core/accounts/migrations
 core/order/migrations
+core/blog/migrations
