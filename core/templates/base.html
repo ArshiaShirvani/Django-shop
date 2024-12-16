@@ -83,11 +83,11 @@
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.view_name  == 'website:contact' %} active {% endif %}" href="{% url 'website:contact' %}">ارتباط با ما</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.view_name  == 'website:repair' %} active {% endif %}" href="#">درخواست تعمیر</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.view_name  == 'website:blog' %} active {% endif %}" href="#">وبلاگ ها</a>
+                            <a class="nav-link {% if request.resolver_match.view_name  == 'blog:post-list' %} active {% endif %}" href="{% url 'blog:post-list' %}">وبلاگ ها</a>
                         </li>
 
 
