@@ -61,7 +61,7 @@ class ProductModel(models.Model):
         return '{:,}'.format(self.price)
 
 class ProductImageModel(models.Model):
-    Product = models.ForeignKey(ProductModel,on_delete=models.CASCADE)
+    Product = models.ForeignKey(ProductModel,on_delete=models.CASCADE,related_name="product_images")
     file = models.ImageField(default="shop/default-image/default-product.png",upload_to="shop/extra-img/")
 
     created_date = models.DateTimeField(auto_now_add=True)
