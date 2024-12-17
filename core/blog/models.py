@@ -1,5 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
+from ckeditor.fields import RichTextField
 
 class PostStatusType(models.IntegerChoices):
     active = 1,("فعال")
@@ -23,7 +24,7 @@ class PostModel(models.Model):
     author = models.ForeignKey("accounts.User",on_delete=models.SET_NULL,null=True)
     slug = models.SlugField(allow_unicode = True,unique=True)
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    content = RichTextField()
     image = models.ImageField(upload_to= 'blog/',default= 'blog/blog.jpg')
     category = models.ManyToManyField(PostCategory)
     tags = TaggableManager()

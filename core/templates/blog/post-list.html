@@ -182,7 +182,7 @@
                                     <h4 class="card-title">
                                         <a class="text-dark" href="/product-overview.html">{{post.title}}</a>
                                     </h4>
-                                    <p class="card-text text-dark">{{post.content|truncatechars:200}}</p>
+                                    <p class="card-text text-dark">{{post.content|safe|truncatechars:200}}</p>
                                 </div>
 
                                 <!-- Rating -->
