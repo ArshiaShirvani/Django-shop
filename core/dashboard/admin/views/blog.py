@@ -58,7 +58,7 @@ class AdminBlogDeleteView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMe
     template_name = "dashboard/admin/blog/blog-delete.html"
     queryset = PostModel.objects.all()
     success_url = reverse_lazy("dashboard:admin:admin-blog-list")
-    success_message = "محصول با موفقیت حذف شد"
+    success_message = "پست با موفقیت حذف شد"
     
 class AdminBlogCreateView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,CreateView):
     
@@ -66,7 +66,7 @@ class AdminBlogCreateView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMe
     template_name = "dashboard/admin/blog/blog-create.html"
     queryset = PostModel.objects.all()
     form_class = BlogForm
-    success_message = "محصول با موفقیت ایجاد شد"
+    success_message = "پست با موفقیت ایجاد شد"
     
     def form_valid(self, form):
         form.instance.user = self.request.user
