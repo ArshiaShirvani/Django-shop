@@ -4,3 +4,4 @@ from .products import *
 from .newsletters import *
 from .users import *
 from .contacts import *
+from .blog import *

@@ -37,6 +37,9 @@ class PostModel(models.Model):
     def __str__(self):
         return " {} - {} ".format(self.id,self.title)
     
+    def is_active(self):
+        return self.status == PostStatusType.active.value
+    
 
 class CommentModel(models.Model):
     post = models.ForeignKey(PostModel,on_delete=models.CASCADE)

@@ -1,0 +1,136 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<style>
+    .small-primary-button {
+        padding: 3px 10px;
+        background-color: #007bff; 
+        color: white; 
+        border: none; 
+        cursor: pointer; 
+        font-size: 10px;
+        border-radius: 5px; 
+    }
+    
+    .small-primary-button:hover,
+    .small-primary-button:focus {
+        background-color: #0056b3;
+    }
+</style>
+
+{% endblock %}
+
+
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item">حساب</li>
+        <li class="breadcrumb-item">داشبورد ادمین</li>
+        <li class="breadcrumb-item">وبلاگ</li>
+        <li class="breadcrumb-item active" aria-current="page">
+            ایجاد پست
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <!-- Header -->
+    <div class="card-header border-bottom">
+        <h5 class="card-header-title">ایجاد پست</h5>
+    </div>
+    <!-- End Header -->
+
+    <!-- Body -->
+    <form action="." method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="row d-flex ">
+                <div class="col-md-6 mb-3">
+                    <label>نام محصول</label>
+                    {{form.title}}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>slug محصول - <button class="small-primary-button" type="button"
+                        onclick="generateSlug()">ساخت slug</button> </label>
+                    {{form.slug}}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="validationValidInput1">نام نویسنده</label>
+                    {{form.author}}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationValidInput1">بازدیدکنندگان</label>
+                    {{form.counted_view}}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="validationValidSelect1">وضعیت</label>
+                    {{form.status}}
+                    <span class="valid-feedback">Valid feedback</span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationValidSelect1">تگ ها</label>
+                    {{form.tags}}
+                    <!-- <span class="valid-feedback">Valid feedback</span> -->
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationValidSelect1">دسته بندی</label>
+                    {{form.category}}
+                    <!-- <span class="valid-feedback">Valid feedback</span> -->
+                </div>
+
+                
+
+                <div class="col-md-12 mb-3">
+                    <label for="validationValidSelect1">توضیحات کامل</label>
+                    {{form.media}}
+                    {{form.content}}
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label for="validationValidFileInput1">تصویر محصول</label>
+                    {{form.image}}
+                </div>
+
+
+            </div>
+            <div class="card-footer">
+                <div class=" d-flex pt-5 justify-content-end">
+                    <a class="btn btn-secondary ms-3" href="{% url 'dashboard:admin:admin-blog-list' %}">بازگشت</a>
+                    <button class="btn btn-primary ms-3" type="submit">ایجاد محصول</button>
+                </div>
+            </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+    function generateSlug() {
+        const title = $("#id_title").val();
+        const slug = slugify(title);
+        $("#id_slug").val(slug)
+    }
+
+    function slugify(titleStr) {
+        titleStr = titleStr.replace(/^\s+|\s+$/g, '');
+        titleStr = titleStr.toLowerCase();
+        //persian support
+        titleStr = titleStr.replace(/[^a-z0-9_\s-ءاأإآؤئبتثجحخدذرزسشصضطظعغفقكلمنهويةى]#u/, '')
+            // Collapse whitespace and replace by -
+            .replace(/\s+/g, '-')
+            // Collapse dashes
+            .replace(/-+/g, '-');
+        slugStr = titleStr;
+        return slugStr;
+    }
+</script>
+{% endblock %}
