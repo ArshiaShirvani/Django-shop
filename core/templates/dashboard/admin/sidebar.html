@@ -8,8 +8,11 @@
           <!-- Avatar -->
           <div class="d-none d-lg-block text-center mb-5">
             <div class="avatar avatar-xxl avatar-circle mb-3">
+              {% if user_profile.image %}
               <img class="avatar-img" src="{{request.user.user_profile.image.url}}" alt="Image Description" />
-
+              {% else %}
+              <img class="avatar-img" src="{% static 'img/user-default.jpg' %}">
+              {% endif %}
             </div>
 
             <h4 class="card-title mb-2">{{request.user.user_profile.get_fullname}}</h4>

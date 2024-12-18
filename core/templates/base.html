@@ -118,10 +118,17 @@
                             {% if request.user.is_authenticated %}
                             <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if user_profile.image %}
                                 <span class="avatar avatar-sm avatar-circle">
                                     <img class="avatar-img" src="{{request.user.user_profile.image.url}}"
                                         alt="Image Description">
                                 </span>
+                                {% else %}
+                                <span class="avatar avatar-sm avatar-circle">
+                                    <img class="avatar-img" src="{% static 'img/user-default.jpg' %}"
+                                        alt="Image Description">
+                                </span>
+                                {% endif %}
                             </button>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
