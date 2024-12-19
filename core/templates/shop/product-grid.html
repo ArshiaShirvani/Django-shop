@@ -177,11 +177,16 @@
                     <div class="card card-bordered shadow-none text-center h-100">
                         <div class="card-pinned">
                             <img class="card-img-top" src="{{object.image.url}}" alt="Image Description">
-
-                            <!-- <div class="card-pinned-top-start">
-                                <span class="badge bg-success rounded-pill">جدید</span>
-                            </div> -->
-
+                            {% if object.is_discounted %}
+                            <div class="card-pinned-top-start">
+                                <span class="badge bg-success rounded-pill">{{object.discount_percent}}% تخفیف </span>
+                            </div>
+                            {% endif %}
+                            {% if object.stock == 0 %}
+                            <div class="card-pinned-top-start">
+                                <span class="badge bg-danger rounded-pill">اتمام موجودی</span>
+                            </div>
+                            {% endif %}
                             <div class="card-pinned-top-end">
                                 <button type="button" class="btn btn-outline-secondary btn-xs btn-icon rounded-circle"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="افزودن به علایق">
@@ -189,9 +194,9 @@
                                 </button>
                             </div>
                         </div>
-
+            
                         <div class="card-body">
-
+            
                             <div class="mb-2">
                                 {% for category in object.category.all %}
                                 <a class="link-sm link-secondary" href="#"> {{category.title}} </a>
@@ -200,7 +205,7 @@
                                 {% endif %}
                                 {% endfor %}
                             </div>
-
+            
                             <h4 class="card-title">
                                 <a class="text-dark"
                                     href="{% url 'shop:product-detail' slug=object.slug %}">{{object.title}}</a>
@@ -215,29 +220,29 @@
                             <p class="card-text text-dark fs-4 formatted-price"> {{object.price}}</p>
                             {% endif %}
                         </div>
-
+            
                         <div class="card-footer pt-0">
                             <!-- Rating -->
                             <a class="d-inline-flex align-items-center mb-3" href="#">
                                 <div class="d-flex gap-1 ms-2">
-                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating"
-                                        width="16">
-                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating"
-                                        width="16">
-                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating"
-                                        width="16">
-                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating"
-                                        width="16">
-                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating"
-                                        width="16">
+                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating" width="16">
+                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating" width="16">
+                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating" width="16">
+                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating" width="16">
+                                    <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating" width="16">
                                 </div>
                                 <span class="small">0</span>
                             </a>
                             <!-- End Rating -->
-
+            
+                            <!-- دکمه افزودن به سبد خرید -->
+                            {% if object.stock > 0 %}
                             <button type="button"
-                                class="btn btn-outline-primary btn-sm btn-transition rounded-pill" onclick="addCartItem('{{object.id}}')">افزودن به سبد
-                                خرید</button>
+                                class="btn btn-outline-primary btn-sm btn-transition rounded-pill"
+                                onclick="addCartItem('{{object.id}}')">افزودن به سبد خرید</button>
+                            {% else %}
+                            <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" disabled>ناموجود</button>
+                            {% endif %}
                         </div>
                     </div>
                     <!-- End Card -->
@@ -247,11 +252,8 @@
                     <p class="text-center">هیچ کالایی برای نمایش وجود ندارد</p>
                 </div>
                 {% endfor %}
-                <!-- End Col -->
-
-
-                <!-- End Col -->
             </div>
+            
             <!-- End Row -->
             {% if page_obj.has_other_pages %}
             <!-- Pagination -->
@@ -425,13 +427,33 @@
             },
             success: function (response) {
                 $("#total-cart-items-count").html(response.total_quantity)
+                Toastify({
+                    text: "محصول با موفقیت به سبد خرید اضافه شد.",
+                    duration: 3000, // مدت زمان نمایش (3 ثانیه)
+                    close: true, // امکان بستن پیام
+                    gravity: "top", // مکان نمایش: بالا یا پایین
+                    position: "right", // مکان نمایش: چپ یا راست
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", // رنگ پس‌زمینه
+                    stopOnFocus: true // توقف در صورت کلیک روی پیام
+                }).showToast();
                 console.log("Data sent successfully:", response);
+                
             },
             error: function (jqXHR, status, error) {
                 console.log("Error occurred:", error);
+                Toastify({
+                    text: "خطا در افزودن محصول به سبد خرید!",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #e53935, #e35d5b)", // رنگ پس‌زمینه خطا
+                    stopOnFocus: true
+                }).showToast();
             }
         });
     }
+
 </script>
 
 {% endblock %}
