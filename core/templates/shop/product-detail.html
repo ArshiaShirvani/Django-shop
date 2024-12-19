@@ -196,10 +196,15 @@
         <!-- End Collapse -->
       </div>
       <!-- End Accordion -->
-
+      {% if object.stock == 0 %}
+      <div class="d-grid mb-4">
+        <button type="button" class="btn btn-primary btntransition" disabled>ناموجود</button>
+      </div>
+      {% else %}
       <div class="d-grid mb-4">
         <button type="button" class="btn btn-primary btntransition">افزودن به سبد خرید</button>
       </div>
+      {% endif %}
 
       <!-- Media -->
       <div class="d-flex align-items-center">
@@ -218,7 +223,7 @@
         </div>
         <div class="flex-grow-1 ms-2">
           <span class="small me-1">نیاز به پشتیبانی دارید؟</span>
-          <a class="link small" href="#">ارسال تیکت</a>
+          <a class="link small" href="{% url 'website:contact' %}">ارسال تیکت</a>
         </div>
       </div>
       <!-- End Media -->
