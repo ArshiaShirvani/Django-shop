@@ -1,5 +1,6 @@
 from shop.models import ProductModel,ProductStatusType
 from cart.models import CartModel,CartItemsModel
+from django.core.exceptions import ValidationError
 
 class CartSession:
     def __init__(self, session):
@@ -25,13 +26,24 @@ class CartSession:
         self.save()
         
     def add_product(self, product_id):
+        """
+        افزودن محصول به سبد خرید با بررسی محدودیت موجودی
+        """
+        product_obj = ProductModel.objects.get(id=product_id, status=ProductStatusType.active.value)
         for item in self._cart["items"]:
             if product_id == item["product_id"]:
+                # بررسی موجودی
+                if item["quantity"] + 1 > product_obj.stock:
+                    raise ValidationError("تعداد محصول نمی‌تواند بیشتر از موجودی انبار باشد.")
                 item["quantity"] += 1
                 break
         else:
+            # بررسی موجودی در صورت افزودن محصول جدید
+            if product_obj.stock < 1:
+                raise ValidationError("محصول موجود نیست.")
             new_item = {"product_id": product_id, "quantity": 1}
             self._cart["items"].append(new_item)
+
         self.save()
 
     def clear(self):
