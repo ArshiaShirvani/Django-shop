@@ -4,19 +4,27 @@ from django.views.generic import View, TemplateView
 from django.http import JsonResponse
 from shop.models import ProductModel, ProductStatusType
 from .cart import CartSession
-
+from django.core.exceptions import ValidationError
 
 class SessionAddProductView(View):
-
     def post(self, request, *args, **kwargs):
         cart = CartSession(request.session)
         product_id = request.POST.get("product_id")
-        if product_id and ProductModel.objects.filter(id=product_id, status=ProductStatusType.active.value).exists():
+        
+        if not product_id or not ProductModel.objects.filter(id=product_id, status=ProductStatusType.active.value).exists():
+            return JsonResponse({"error": "محصول معتبر نیست."}, status=400)
 
+        try:
             cart.add_product(product_id)
-        if request.user.is_authenticated:
-            cart.merge_session_cart_in_db(request.user)
-        return JsonResponse({"cart": cart.get_cart_dict(), "total_quantity": cart.get_total_quantity()})
+            if request.user.is_authenticated:
+                cart.merge_session_cart_in_db(request.user)
+            return JsonResponse({
+                "cart": cart.get_cart_dict(),
+                "total_quantity": cart.get_total_quantity(),
+                "message": "محصول با موفقیت به سبد خرید اضافه شد."
+            })
+        except ValidationError as e:
+            return JsonResponse({"error": str(e)}, status=400)
 
 
 class SessionDeleteProductView(View):
