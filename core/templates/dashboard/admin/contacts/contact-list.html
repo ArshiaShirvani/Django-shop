@@ -1,5 +1,6 @@
 {% extends 'dashboard/admin/base.html' %}
 {% load static %}
+{% load dashboard_filters %}
 
 {% block extra_css %}
 <style>
@@ -108,7 +109,7 @@
                                     <td>{{object.email}}</td>
                                     <td>{{object.phone_number}}</td>
                                     <td>{{object.subject}}</td>
-                                    <td>{{object.created_date|date:"Y-m-d h:i"}}</td>
+                                    <td>{{object.created_date|to_jalali}}</td>
                                     <td>
                                         {% if object.seen %}
                                         <span class="badge bg-success">دیده شده</span>

@@ -1,5 +1,6 @@
 {% extends 'dashboard/admin/base.html' %}
 {% load static %}
+{% load dashboard_filters %}
 
 {% block content %}
 <!-- Card -->
@@ -83,8 +84,9 @@
                                     <th scope="col">نام</th>
                                     <th scope="col">نویسنده</th>
                                     <th scope="col">دسته بندی</th>
-                                    <th scope="col">تاریخ ثبت</th>
                                     <th scope="col">وضعیت</th>
+                                    <th scope="col">تاریخ ثبت</th>
+                    
                                     <th scope="col">عملیات</th>
 
                                 </tr>
@@ -94,14 +96,14 @@
                                 <tr>
                                     <th scope="row">{{forloop.counter}}</th>
                                     <td>{{object.title}}</td>   
-                                    <td>{{object.full_name}}</td>
+                                    <td>{{object.author.first_name}}</td>
                                     <td>{% for category in object.category.all %} {{category.name}}
                                         {% if not forloop.last %},{% endif %} {% endfor %}</td>
                                     <td> {% if object.is_active %}<span class="badge bg-success">نشر شده</span>
                                         {% else %}
                                         <span class="badge bg-danger">ذخیره</span> {% endif %}
                                     </td>
-                                    <td>{{object.created_date|date:"Y-m-d h:i"}}</td>
+                                    <td>{{object.created_date|to_jalali}}</td>
                                     <td class="d-flex">
                                         <a class="btn btn-sm btn-icon btn-ghost-secondary"
                                             href="{% url 'dashboard:admin:admin-blog-edit' pk=object.pk %}"><i class="bi-pencil-square"></i></a>

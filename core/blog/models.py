@@ -1,6 +1,8 @@
 from django.db import models
 from taggit.managers import TaggableManager
 from ckeditor.fields import RichTextField
+from khayyam import JalaliDate
+
 
 class PostStatusType(models.IntegerChoices):
     active = 1,("فعال")
@@ -19,6 +21,12 @@ class PostCategory(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def get_jalali_created_date(self):
+        return JalaliDate(self.created_date).strftime('%Y/%m/%d')
+
+    def get_jalali_updated_date(self):
+        return JalaliDate(self.updated_date).strftime('%Y/%m/%d')
 
 class PostModel(models.Model):
     author = models.ForeignKey("accounts.User",on_delete=models.SET_NULL,null=True)
@@ -40,6 +48,12 @@ class PostModel(models.Model):
     def is_active(self):
         return self.status == PostStatusType.active.value
     
+    def get_jalali_created_date(self):
+        return JalaliDate(self.created_date).strftime('%Y/%m/%d')
+
+    def get_jalali_updated_date(self):
+        return JalaliDate(self.updated_date).strftime('%Y/%m/%d')
+    
 
 class CommentModel(models.Model):
     post = models.ForeignKey(PostModel,on_delete=models.CASCADE)
@@ -53,4 +67,10 @@ class CommentModel(models.Model):
     
     def __str__(self):
         return " {} - {} ".format(self.name,self.email)
+    
+    def get_jalali_created_date(self):
+        return JalaliDate(self.created_date).strftime('%Y/%m/%d')
+
+    def get_jalali_updated_date(self):
+        return JalaliDate(self.updated_date).strftime('%Y/%m/%d')
     

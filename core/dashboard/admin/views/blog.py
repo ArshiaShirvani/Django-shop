@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.core.exceptions import FieldError
 from blog.models import PostModel,PostCategory,PostStatusType
 from ..forms import BlogForm
+from khayyam import JalaliDate
 
 class AdminBlogListView(LoginRequiredMixin, HasAdminAccessPermission, ListView):
     
@@ -40,6 +41,9 @@ class AdminBlogListView(LoginRequiredMixin, HasAdminAccessPermission, ListView):
         context["total_items"] = self.get_queryset().count()
         context["categories"] = PostCategory.objects.all()
         return context
+    
+    def to_jalali(value):
+        return JalaliDate(value).strftime('%Y/%m/%d')
     
 class AdminBlogEditView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin,UpdateView):
     

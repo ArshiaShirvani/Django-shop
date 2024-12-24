@@ -1,6 +1,6 @@
 {% extends 'dashboard/admin/base.html' %}
 {% load static %}
-
+{% load dashboard_filters %}
 
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
@@ -89,7 +89,7 @@
                                     <th scope="row">{{forloop.counter}}</th>
                                     <td>{{object.email}}</td>
                                     <td>{% if object.status == True %}<span class="badge bg-success">فعال</span>{% else %}<span class="badge bg-danger">غیرفعال</span>{% endif %}</td>
-                                    <td>{{object.created_date|date:"Y-m-d h:i"}}</td>
+                                    <td>{{object.created_date|to_jalali}}</td>
                                     <td class="d-flex">
                                         <a class="btn btn-sm btn-icon btn-ghost-danger"
                                             href="{% url 'dashboard:admin:admin-newsletters-delete' pk=object.pk %}"><i class="bi-trash"></i></a>

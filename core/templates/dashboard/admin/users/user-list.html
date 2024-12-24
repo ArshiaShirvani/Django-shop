@@ -1,6 +1,6 @@
 {% extends 'dashboard/admin/base.html' %}
 {% load static %}
-
+{% load dashboard_filters %}
 
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
@@ -90,7 +90,7 @@
                                     <th scope="row">{{forloop.counter}}</th>
                                     <td>{{object.id}}</td>
                                     <td>{{object.email}}</td>
-                                    <td>{{object.created_date|date:"Y-m-d h:i"}}</td>
+                                    <td>{{object.created_date|to_jalali}}</td>
                                     <td>
                                         {% if object.is_active %}
                                         <span class="badge bg-success">فعال</span>
