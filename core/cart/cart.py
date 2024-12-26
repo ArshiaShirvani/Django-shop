@@ -98,3 +98,5 @@ class CartSession:
             cart_item.save()
         session_product_ids = [item["product_id"] for item in  self._cart["items"]]
         CartItemsModel.objects.filter(cart=cart).exclude(product__id__in=session_product_ids).delete()
+        
+                

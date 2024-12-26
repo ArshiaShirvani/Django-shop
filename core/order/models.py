@@ -53,7 +53,15 @@ class OrderModel(models.Model):
         ordering = ["-created_date"]
         
     def calculate_total_price(self):
-        return sum(item.product.price * item.quantity for item in self.order_items.all())
+        return sum(item.price * item.quantity for item in self.order_items.all())
+    
+    
+    def get_price_order(self):
+        
+        if self.coupon:            
+            return round(self.total_price - (self.total_price * Decimal( self.coupon.discount_percent /100)))
+        else:
+            return self.total_price
     
     def __str__(self):
         return self.user.email
