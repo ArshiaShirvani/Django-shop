@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
 
+
+{% block content %}
+<!-- Content -->
 <div class="container content-space-3 content-space-lg-5">
     <div class="row">
         <div class="col-lg-8 mb-7 mb-lg-0">
@@ -14,22 +16,23 @@
                 <hr class="my-4">
 
                 <div class="d-grid gap-2">
-                    {% for address in addresses %}
+
                     <!-- Check -->
+                    {% for address in addresses %}
                     <div class="form-check">
-                        <input type="radio" class="form-check-input" name="address_id" checked required value="{{address.id}}">
-                        <label class="form-check-label" for="address"> {{address.state}},{{address.city}},{{address.address}} ,{{address.zip_code}}</label>
+                        <input type="radio" class="form-check-input" name="address_id" value="{{address.id}}" required>
+                        <label class="form-check-label" for="address">
+                            {{address.state}},{{address.city}},{{address.address}} ,{{address.zip_code}}</label>
                     </div>
                     {% endfor %}
-                    <!-- End Check -->
-                    <div>
+
+                    <div class="mt-3">
                         <a class="" href="{% url 'dashboard:customer:customer-address-list' %}">مدیریت آدرس ها</a>
                     </div>
                 </div>
 
                 <hr class="my-4">
 
-                <hr class="my-4">
 
                 <div class="row align-items-center">
 
@@ -37,7 +40,7 @@
 
                     <div class="col-sm text-center text-sm-start">
                         <a class="link" href="{% url 'cart:session-cart-summary' %}">
-                            <i class="bi-chevron-left small ms-1"></i> بازگشت به سبد خرید
+                            بازگشت به سبد خرید<i class="bi-chevron-left small me-1"></i>
                         </a>
                     </div>
                     <!-- End Col -->
@@ -57,46 +60,49 @@
                             <h3 class="card-header-title">خلاصه سفارش</h3>
                         </div>
 
-                        
 
-                            <div class="input-group border-bottom pb-4 mb-3 ">
-                                <input type="text" class="form-control text-center" name="name" placeholder="کد تخفیف"
-                                    aria-label="کد تخفیف">
-                                <button class="btn btn-primary" form="checkout-form"> بررسی</button>
-                            </div>
+                        <div class="input-group border-bottom pb-4 mb-3 ">
+                            <input type="text" class="form-control text-center" name="coupon" placeholder="کد تخفیف"
+                                aria-label="کد تخفیف" form="checkout-form" id="coupon-input">
+                            <button class="btn btn-primary" type="button" onclick="validateCoupon()"> بررسی</button>
+                        </div>
 
-                            <div class="border-bottom pb-4 mb-4">
-                                <div class="d-grid gap-3">
+                        <div class="border-bottom pb-4 mb-4">
+                            <div class="d-grid gap-3">
 
-                                    <!-- End Row -->
-
-                                    <dl class="row">
-                                        <dt class="col-sm-6">هزینه ارسال</dt>
-                                        <dd class="col-sm-12 text-sm-end mb-0 formatted-price">60000</dd>
-                                    </dl>
-                                    <!-- End Row -->
-                                </div>
-                            </div>
-
-                            <div class="d-grid gap-3 mb-4">
-                                <dl class="row">
-                                    <dt class="col-sm-6">مالیات تخمینی</dt>
-                                    <dd class="col-sm-12 text-sm-end mb-0">با ضریب 9% - 35000 تومان</dd>
-
-                                </dl>
                                 <!-- End Row -->
 
                                 <dl class="row">
-                                    <dt class="col-sm-6">جمع کل</dt>
-                                    <dd class="col-sm-6 text-sm-end mb-0 formatted-price">{{total_price}}</dd>
+                                    <dt class="col-sm-6">هزینه ارسال</dt>
+                                    <dd class="col-sm-12 text-sm-end mb-0">برای تهران و حومه 35000 تومان</dd>
+                                    <dd class="col-sm-12 text-sm-end mb-0">برای شهرستان ها 50000 تومان</dd>
                                 </dl>
                                 <!-- End Row -->
                             </div>
+                        </div>
 
-                            <div class="d-grid">
-                                <button class="btn btn-primary btn-lg" form="checkout-form">ثبت نهایی</button>
-                            </div>
-                        
+                        <div class="d-grid gap-3 mb-4">
+                            <dl class="row">
+                                <dt class="col-sm-6">مالیات تخمینی</dt>
+                                <dd class="col-sm-12 text-sm-end mb-0">
+                                    9% مالیات - 
+                                    <span class="formatted-price" id="total-tax"> {{total_tax}}</span>
+                                </dd>
+
+                            </dl>
+                            <!-- End Row -->
+
+                            <dl class="row">
+                                <dt class="col-sm-6">جمع کل</dt>
+                                <dd class="col-sm-6 text-sm-end mb-0 formatted-price" id="total-price">{{total_price}}</dd>
+                            </dl>
+                            <!-- End Row -->
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg" type="submit" form="checkout-form" >ثبت نهایی</button>
+                        </div>
+
                     </div>
                     <!-- End Card -->
                 </div>
@@ -119,7 +125,7 @@
                     </div>
                     <div class="flex-grow-1 ms-2">
                         <span class="small me-1">نیاز به پشتیبانی دارید؟</span>
-                        <a class="link small" href="{% url 'website:contact' %}">ارسال تیکت</a>
+                        <a class="link small" href="#">ارسال تیکت</a>
                     </div>
                 </div>
                 <!-- End Media -->
@@ -129,5 +135,55 @@
     </div>
     <!-- End Row -->
 </div>
-
+<!-- End Content -->
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+    function applyDiscount(total_price,total_tax){
+        $("#total-price").html(total_price)
+        $("#total-tax").html(total_tax)
+
+        formatPriceInToman(document.getElementById("total-price"))
+        formatPriceInToman(document.getElementById("total-tax"))
+    }
+
+    function validateCoupon(){
+        $.ajax({
+            url: "{%  url 'order:validate-coupon' %}",
+            method: 'POST',
+            data: {
+                code: $('#coupon-input').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+    
+            },
+            success: function (response) {
+                console.log("success",response);
+                Toastify({
+                    text:response.message,
+                    className: `info`,
+                    style: {
+                      background: "blue",
+                    }
+                  }).showToast();
+                  applyDiscount(response.total_price,response.total_tax)
+                // do something with the response data
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                Toastify({
+                    text:jqXHR.responseJSON.message,
+                    className: `error`,
+                    style: {
+                      background: "red",
+                    }
+                  }).showToast();
+                
+                // handle the error case
+            }
+        });
+    }
+
+</script>
+
+{% endblock %}

@@ -1,18 +1,25 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 from django.views.generic import (
     TemplateView,
     FormView,
+    View
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from order.permissions import HasCustomerAccessPermission
-from . models import UserAddressModel
-from cart.models import CartModel
-from cart.cart import CartSession
-from .forms import CheckOutForm 
+from order.models import UserAddressModel
+from order.forms import CheckOutForm
+from cart.models import CartModel, CartItemsModel
+from order.models import OrderModel, OrderItemsModel
 from django.urls import reverse_lazy
-from order.models import OrderModel,OrderItemsModel
-from django.contrib import messages
+from cart.cart import CartSession
+from decimal import Decimal
+from order.models import CouponModel
+from django.http import JsonResponse
+from django.utils import timezone
 from django.shortcuts import redirect
+# Create your views here.
+
+
 
 class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormView):
     template_name = "order/checkout.html"
@@ -41,6 +48,8 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
         order.save()
         return redirect(reverse_lazy("order:order-completed"))
 
+    
+
     def create_order(self, address):
         return OrderModel.objects.create(
             user=self.request.user,
@@ -65,9 +74,9 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
 
     def apply_coupon(self, coupon, order, user, total_price):
         if coupon:
-            # discount_amount = round(
-            #     (total_price * Decimal(coupon.discount_percent / 100)))
-            # total_price -= discount_amount
+            discount_amount = round(
+                (total_price * Decimal(coupon.discount_percent / 100)))
+            total_price -= discount_amount
 
             order.coupon = coupon
             coupon.used_by.add(user)
@@ -89,6 +98,43 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
         return context
 
 
-class OrderCompletedView(LoginRequiredMixin,HasCustomerAccessPermission,TemplateView):
-    login_url = reverse_lazy('accounts:login')
+class OrderCompletedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
     template_name = "order/order-completed.html"
+    
+class OrderFailedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
+    template_name = "order/order-failed.html"
+
+
+class ValidateCouponView(LoginRequiredMixin, HasCustomerAccessPermission, View):
+
+    def post(self, request, *args, **kwargs):
+        code = request.POST.get("code")
+        user = self.request.user
+
+        status_code = 200
+        message = "کد تخفیف با موفقیت ثبت شد"
+        total_price = 0
+        total_tax = 0
+
+        try:
+            coupon = CouponModel.objects.get(code=code)
+        except CouponModel.DoesNotExist:
+            return JsonResponse({"message": "کد تخفیف یافت نشد"}, status=404)
+        else:
+            if coupon.used_by.count() >= coupon.max_limit_usage:
+                status_code, message = 403, "محدودیت در تعداد استفاده"
+
+            elif coupon.expiration_date and coupon.expiration_date < timezone.now():
+                status_code, message = 403, "کد تخفیف منقضی شده است"
+
+            elif user in coupon.used_by.all():
+                status_code, message = 403, "این کد تخفیف قبلا توسط شما استفاده شده است"
+
+            else:
+                cart = CartModel.objects.get(user=self.request.user)
+
+                total_price = cart.calculate_total_price()
+                total_price = round(
+                    total_price - (total_price * (coupon.discount_percent/100)))
+                total_tax = round((total_price * 9)/100)
+        return JsonResponse({"message": message, "total_tax": total_tax, "total_price": total_price}, status=status_code)

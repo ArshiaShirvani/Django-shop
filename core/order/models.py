@@ -56,7 +56,7 @@ class OrderModel(models.Model):
         return sum(item.price * item.quantity for item in self.order_items.all())
     
     
-    def get_price_order(self):
+    def get_price(self):
         
         if self.coupon:            
             return round(self.total_price - (self.total_price * Decimal( self.coupon.discount_percent /100)))
