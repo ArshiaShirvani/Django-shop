@@ -26,14 +26,15 @@ class ZarinPalSandbox:
     ZP_API_STARTPAY = "https://sandbox.zarinpal.com/pg/StartPay/{authority}"
     _payment_page_url = "https://sandbox.zarinpal.com/pg/StartPay/"
 
-    def __init__(self, merchant, call_back_url):
+    def __init__(self, merchant, call_back_url,amount):
         self.MERCHANT = merchant
         self.callbackURL = call_back_url
+        self.amount = amount
 
-    def payment_request(self, description="پرداختی کاربر"):
+    def payment_request(self,description="پرداختی کاربر"):
         req_data = {
             "merchant_id": "4ced0a1e-4ad8-4309-9668-3ea3ae8e8897",
-            "amount": float(10000),
+            "amount": float(self.amount),
             "callback_url": self.callbackURL,
             "description": description,
         }

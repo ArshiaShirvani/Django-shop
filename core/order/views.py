@@ -51,7 +51,7 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
         return redirect(self.create_payment_url(order))
 
     def create_payment_url(self, order):
-        zarinpal = ZarinPalSandbox(merchant='4ced0a1e-4ad8-4309-9668-3ea3ae8e8897', call_back_url="http://127.0.0.1:8000/payment/verify/")
+        zarinpal = ZarinPalSandbox(amount=float(order.total_price),merchant='4ced0a1e-4ad8-4309-9668-3ea3ae8e8897', call_back_url="http://127.0.0.1:8000/payment/verify/")
         response = zarinpal.payment_request()
         payment_obj = PaymentModel.objects.create(
             authority_id=response,
