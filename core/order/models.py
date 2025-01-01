@@ -4,10 +4,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class OrderStatusType(models.IntegerChoices):
     pending = 1 , "در انتظار پرداخت"
-    processing = 2 , "در حال پردازش"
-    shipped = 3 , "ارسال شده"
-    delivered = 4 , "تحویل داده شده"
-    canceled = 5 , "لغو شده"
+    success = 2, "موفقیت آمیز"
+    failed = 3,"لغو شده"
 
 class UserAddressModel(models.Model):
     user = models.ForeignKey('accounts.User',on_delete=models.CASCADE)
@@ -40,6 +38,8 @@ class OrderModel(models.Model):
     state = models.CharField(max_length=250)
     city = models.CharField(max_length=250)
     zip_code = models.CharField(max_length=250)
+    
+    payment = models.ForeignKey('payment.PaymentModel',on_delete=models.SET_NULL,null=True,blank=True)
     
     total_price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
     

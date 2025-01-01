@@ -18,7 +18,9 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.shortcuts import redirect
 # Create your views here.
-
+from payment.zarinpal_client import ZarinPalSandbox
+from payment.models import PaymentModel
+import json
 
 
 class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormView):
@@ -46,9 +48,20 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
         total_price = order.calculate_total_price()
         self.apply_coupon(coupon, order, user, total_price)
         order.save()
-        return redirect(reverse_lazy("order:order-completed"))
+        return redirect(self.create_payment_url(order))
 
-    
+    def create_payment_url(self, order):
+        zarinpal = ZarinPalSandbox(merchant='4ced0a1e-4ad8-4309-9668-3ea3ae8e8897', call_back_url="http://127.0.0.1:8000/payment/verify/")
+        response = zarinpal.payment_request()
+        payment_obj = PaymentModel.objects.create(
+            authority_id=response,
+            amount=order.total_price,
+            response_json = response[0],
+        )
+        order.payment = payment_obj
+        order.save()
+        return zarinpal.generate_payment_url(response)
+
 
     def create_order(self, address):
         return OrderModel.objects.create(
@@ -99,10 +112,10 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
 
 
 class OrderCompletedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
-    template_name = "order/order-completed.html"
+    template_name = "order/completed.html"
     
 class OrderFailedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
-    template_name = "order/order-failed.html"
+    template_name = "order/failed.html"
 
 
 class ValidateCouponView(LoginRequiredMixin, HasCustomerAccessPermission, View):
