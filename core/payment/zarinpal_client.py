@@ -4,6 +4,7 @@ from django.conf import settings
 from django.shortcuts import redirect
 from .models import PaymentModel
 from order.models import OrderModel
+from django.http import HttpResponse
 
 def get_domain():
     # for fixing issue with the sites model before migration
@@ -23,19 +24,19 @@ def get_protocol():
 class ZarinPalSandbox:
     ZP_API_REQUEST = "https://sandbox.zarinpal.com/pg/v4/payment/request.json"
     ZP_API_VERIFY = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
-    ZP_API_STARTPAY = "https://sandbox.zarinpal.com/pg/StartPay/{authority}"
+    # ZP_API_STARTPAY = "https://sandbox.zarinpal.com/pg/StartPay/{authority}"
     _payment_page_url = "https://sandbox.zarinpal.com/pg/StartPay/"
+    _callbackURL = "http://127.0.0.1:8000/payment/verify/"
 
-    def __init__(self, merchant, call_back_url,amount):
+    def __init__(self, merchant,amount):
         self.MERCHANT = merchant
-        self.callbackURL = call_back_url
         self.amount = amount
 
     def payment_request(self,description="پرداختی کاربر"):
         req_data = {
             "merchant_id": "4ced0a1e-4ad8-4309-9668-3ea3ae8e8897",
             "amount": float(self.amount),
-            "callback_url": self.callbackURL,
+            "callback_url": self._callbackURL,
             "description": description,
         }
         req_header = {"accept": "application/json",
@@ -49,19 +50,24 @@ class ZarinPalSandbox:
 
         
 
-    def payment_verify(self, amount, authority):
-        payload = {
-            "MerchantID": self.merchant_id,
-            "Amount": amount,
-            "Authority": authority
+    def payment_verify(self, amount,authority):
+        req_data = {
+            "merchant_id": "4ced0a1e-4ad8-4309-9668-3ea3ae8e8897",
+            "amount": amount,
+            "authority": authority
         }
-        headers = {
-            'Content-Type': 'application/json'
+        
+        req_header = {
+        'Content-Type': 'application/json'  
         }
-
-        response = requests.post(
-            self._payment_verify_url, headers=headers, data=json.dumps(payload))
-        return response.json()
+        
+        req = requests.post(url=self.ZP_API_VERIFY, data=json.dumps(req_data), headers=req_header)
+        if req is not None:
+        
+            return req.json()['data']
+        else:
+            return HttpResponse(f'تراکنش ناموفق بوده است یا توسط کاربر لغو شده است')
+            
     
     def generate_payment_url(self, authority):
         return f"{self._payment_page_url}{authority}"

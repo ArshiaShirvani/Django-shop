@@ -4,4 +4,4 @@ from .models import PaymentModel
 
 @admin.register(PaymentModel)
 class PaymentModelAdmin(admin.ModelAdmin):
-    list_display = ('id','authority_id','ref_id','amount','response_code','created_date',)
+    list_display = ('id','authority_id','ref_id','amount','status','response_code','created_date',)

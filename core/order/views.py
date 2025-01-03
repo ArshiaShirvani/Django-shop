@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from order.permissions import HasCustomerAccessPermission
 from order.models import UserAddressModel
 from order.forms import CheckOutForm
-from cart.models import CartModel, CartItemsModel
+from cart.models import CartModel
 from order.models import OrderModel, OrderItemsModel
 from django.urls import reverse_lazy
 from cart.cart import CartSession
@@ -17,7 +17,6 @@ from order.models import CouponModel
 from django.http import JsonResponse
 from django.utils import timezone
 from django.shortcuts import redirect
-# Create your views here.
 from payment.zarinpal_client import ZarinPalSandbox
 from payment.models import PaymentModel
 import json
@@ -51,12 +50,11 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
         return redirect(self.create_payment_url(order))
 
     def create_payment_url(self, order):
-        zarinpal = ZarinPalSandbox(amount=float(order.total_price),merchant='4ced0a1e-4ad8-4309-9668-3ea3ae8e8897', call_back_url="http://127.0.0.1:8000/payment/verify/")
+        zarinpal = ZarinPalSandbox(amount=float(order.total_price),merchant='4ced0a1e-4ad8-4309-9668-3ea3ae8e8897')
         response = zarinpal.payment_request()
         payment_obj = PaymentModel.objects.create(
             authority_id=response,
             amount=order.total_price,
-            response_json = response[0],
         )
         order.payment = payment_obj
         order.save()
@@ -112,10 +110,10 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
 
 
 class OrderCompletedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
-    template_name = "order/completed.html"
+    template_name = "order/order-completed.html"
     
 class OrderFailedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
-    template_name = "order/failed.html"
+    template_name = "order/order-failed.html"
 
 
 class ValidateCouponView(LoginRequiredMixin, HasCustomerAccessPermission, View):
