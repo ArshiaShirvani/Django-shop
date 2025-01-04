@@ -35,7 +35,7 @@ class ZarinPalSandbox:
     def payment_request(self,description="پرداختی کاربر"):
         req_data = {
             "merchant_id": "4ced0a1e-4ad8-4309-9668-3ea3ae8e8897",
-            "amount": float(self.amount),
+            "amount": int(self.amount),
             "callback_url": self._callbackURL,
             "description": description,
         }

@@ -23,12 +23,12 @@ class PaymentVerifyView(View):
         # create client of the zarinpal
         zarin_pal = ZarinPalSandbox(
             merchant="4ced0a1e-4ad8-4309-9668-3ea3ae8e8897",
-            amount=int(payment_obj.amount),
+            amount=int(payment_obj.amount)*10,
         )
 
         # checking the response of the payment request verify
         response = zarin_pal.payment_verify(
-            int(payment_obj.amount), payment_obj.authority_id
+            int(payment_obj.amount)*10, payment_obj.authority_id
         )
 
         # checking for the presence of required keys in the response
