@@ -62,6 +62,20 @@ class OrderModel(models.Model):
             return round(self.total_price - (self.total_price * Decimal( self.coupon.discount_percent /100)))
         else:
             return self.total_price
+        
+    def get_status(self):
+        return {
+            "id":self.status,
+            "title":OrderStatusType(self.status).name,
+            "label":OrderStatusType(self.status).label,
+        }
+        
+    def get_full_address(self):
+        return f"{self.state},{self.city},{self.address}"
+    
+    @property
+    def is_successful(self):
+        return self.status == OrderStatusType.success.value
     
     def __str__(self):
         return self.user.email
