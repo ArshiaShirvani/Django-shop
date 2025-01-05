@@ -6,4 +6,5 @@ urlpatterns = [
     path("",include("dashboard.customer.urls.generals")),
     path("",include("dashboard.customer.urls.profiles")),
     path("",include("dashboard.customer.urls.address")),
+    path("",include("dashboard.customer.urls.orders")),
 ]
