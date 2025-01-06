@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.sessions.models import Session
-from .models import ProductModel,ProductImageModel,ProductCategoryModel
+from .models import ProductModel,ProductImageModel,ProductCategoryModel,WishListModel
 
 @admin.register(ProductModel)
 class ProductModelAdmin(admin.ModelAdmin):
@@ -20,3 +20,7 @@ class SessionAdmin(admin.ModelAdmin):
         return obj.get_decoded()
     list_display = ['session_key', '_session_data', 'expire_date']
 
+
+@admin.register(WishListModel)
+class WishListAdmin(admin.ModelAdmin):
+    list_display = ('id','user','product','created_date',)
