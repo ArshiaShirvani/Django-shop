@@ -580,6 +580,80 @@
             })
         })()
     </script>
+    <script>
+
+        function addToWishlist(element,product_id) {
+     
+            //console.log(product_id)
+            $.ajax({
+                url: "{%  url 'shop:add-or-remove-wishlist' %}",
+                method: 'POST',
+                data: {
+                    product_id: product_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+        
+                },
+                success: function (response) {
+
+                    Toastify({
+                        text:response.message,
+                        className: `info`,
+                        style: {
+                          background: "blue",
+                        }
+                      }).showToast();
+                    $(element).toggleClass('active');
+
+                    // do something with the response data
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    // handle the error case
+                }
+            });
+        }
+        
+    </script>
+<script>
+    function addCartItem(product_id){
+        console.log(product_id)
+        $.ajax({
+            url: "{% url 'cart:session-add-product' %}",
+            type: "POST",
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: '{{csrf_token}}'
+            },
+            success: function (response) {
+                $("#total-cart-items-count").html(response.total_quantity)
+                Toastify({
+                    text: "محصول با موفقیت به سبد خرید اضافه شد.",
+                    duration: 3000, 
+                    close: true, 
+                    gravity: "top", 
+                    position: "right", 
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", 
+                    stopOnFocus: true 
+                }).showToast();
+                console.log("Data sent successfully:", response);
+                
+            },
+            error: function (jqXHR, status, error) {
+                console.log("Error occurred:", error);
+                Toastify({
+                    text: "خطا در افزودن محصول به سبد خرید!",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #e53935, #e35d5b)",
+                    stopOnFocus: true
+                }).showToast();
+            }
+        });
+    }
+
+</script>
     {% block extra_js %} {% endblock extra_js %}
 
     {% block extra_js_no_compress %} {% endblock extra_js_no_compress %}
