@@ -23,6 +23,8 @@ import json
 
 
 class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormView):
+    
+    login_url = reverse_lazy("accounts:login")
     template_name = "order/checkout.html"
     form_class = CheckOutForm
     success_url = reverse_lazy('order:completed')
