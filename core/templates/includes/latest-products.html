@@ -18,12 +18,16 @@
                                 <span class="badge bg-success rounded-pill">جدید</span>
                             </div> -->
 
+                    {% if request.user.is_authenticated %}
                     <div class="card-pinned-top-end">
-                        <button type="button" class="btn btn-outline-secondary btn-xs btn-icon rounded-circle"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="افزودن به علایق">
+                        <button type="button"
+                            class="btn btn-outline-secondary btn-xs btn-icon rounded-circle {% if latest_product.id in wishlist_items %} active {% endif %}"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="افزودن به علایق"
+                            onclick="addToWishlist(this,`{{latest_product.id}}`)">
                             <i class="bi-heart"></i>
                         </button>
                     </div>
+                    {% endif %}
                 </div>
 
                 <div class="card-body">
@@ -58,7 +62,8 @@
                     </a>
                     <!-- End Rating -->
 
-                    <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill">افزودن به
+                    <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill"
+                        onclick="addCartItem('{{latest_product.id}}')">افزودن به
                         سبد
                         خرید</button>
                 </div>
