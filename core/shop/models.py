@@ -30,6 +30,8 @@ class ProductModel(models.Model):
     discount_percent = models.IntegerField(default=0,validators=[MinValueValidator(0), MaxValueValidator(80)])
     status = models.IntegerField(choices=ProductStatusType.choices,default=ProductStatusType.disabled.value)
 
+    avg_rate = models.FloatField(default=0.0)
+    
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     
@@ -61,8 +63,8 @@ class ProductModel(models.Model):
         return '{:,}'.format(self.price)
 
 class ProductImageModel(models.Model):
-    Product = models.ForeignKey(ProductModel,on_delete=models.CASCADE,related_name="product_images")
-    file = models.ImageField(default="shop/default-image/default-product.png",upload_to="shop/extra-img/")
+    product = models.ForeignKey(ProductModel,on_delete=models.CASCADE,related_name="product_images")
+    file = models.ImageField(upload_to="shop/extra-img/")
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
