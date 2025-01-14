@@ -176,3 +176,5 @@ core/accounts/migrations
 core/order/migrations
 core/blog/migrations
 core/media/uploads
+core/review/migrations
+core/media/
