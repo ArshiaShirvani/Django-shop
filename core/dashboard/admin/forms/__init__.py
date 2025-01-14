@@ -4,3 +4,4 @@ from .users import *
 from .blog import *
 from .coupons import *
 from .orders import *
+from .reviews import *
