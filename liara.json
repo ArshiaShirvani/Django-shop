@@ -1,18 +1,22 @@
 {
-    "platform": "docker",
-    "app": "tahvie-shop",
-    "port": 8000,
-    "build": {
-      "dockerfile": "./dockerfiles/dev/django/Dockerfile"
+  "platform": "django",
+  "django": {
+    "pythonVersion": "3.9",
+    "collectStatic": true,
+    "compileMessages": false,
+    "modifySettings": true,
+    "timezone": "Asia/Tehran"
+    
+  },
+  "app": "shop-test",
+  "disks": [
+    {
+      "name": "staticfiles",
+      "mountTo": "staticfiles"
     },
-    "disks": [
-      {
-        "name": "static",
-        "mountTo": "/usr/src/app/static"
-      },
-      {
-        "name": "media",
-        "mountTo": "/usr/src/app/media"
-      }
-    ]
-  }
+    {
+      "name": "media",
+      "mountTo": "media"
+    }
+  ]
+}
