@@ -160,20 +160,4 @@ cython_debug/
 #.idea/
 
 #ignore database
-postgres/data/*
 
-#ignore upload file
-core/media/shop/upload-image
-core/media/dashboard/
-core/media/blog
-
-#ignore migrations of the models 
-core/shop/migrations
-core/website/migrations
-core/cart/migrations
-core/dashboard/migrations
-core/accounts/migrations
-core/order/migrations
-core/blog/migrations
-core/review/migrations
-core/media/

@@ -1,0 +1,18 @@
+{
+    "platform": "docker",
+    "app": "tahvie-shop",
+    "port": 8000,
+    "build": {
+      "dockerfile": "./dockerfiles/dev/django/Dockerfile"
+    },
+    "disks": [
+      {
+        "name": "static",
+        "mountTo": "/usr/src/app/static"
+      },
+      {
+        "name": "media",
+        "mountTo": "/usr/src/app/media"
+      }
+    ]
+  }
