@@ -8,7 +8,7 @@
     "timezone": "Asia/Tehran"
     
   },
-  "app": "shop-test",
+  "app": "django-shop-test",
   "disks": [
     {
       "name": "staticfiles",
